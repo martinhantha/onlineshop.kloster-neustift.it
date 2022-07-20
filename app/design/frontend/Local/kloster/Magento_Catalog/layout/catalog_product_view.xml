@@ -1,0 +1,16 @@
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="product.info.sku" remove="true"/>
+        <referenceBlock name="product.info.review" remove="true"/>
+        <referenceContainer name="product.info.price">
+            <block class="Magento\Catalog\Block\Product\View\Attributes" name="product.info.shortinfos" template="Magento_Catalog::product/view/shortinfos.phtml" after="product.price.final" />
+        </referenceContainer>
+        <referenceBlock name="product.info.overview" remove="true"/>
+        <referenceBlock name="view.addto.compare" remove="true"/>
+        <referenceBlock name="reviews.tab" remove="true" />
+        <referenceBlock name="product.review.form" remove="true" />
+        <referenceBlock name="product.info.review" remove="true" />
+        <move element="product.info.stock.sku" destination="product.info.price" after="product.price.final" />
+
+    </body>
+</page>

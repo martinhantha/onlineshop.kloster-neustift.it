@@ -1,0 +1,100 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_AutoRelated
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+use Magento\Catalog\Helper\Image;
+use Magento\Catalog\Model\Product;
+use Magento\Framework\Data\Helper\PostHelper;
+use Mageplaza\AutoRelated\Block\Product\Block;
+
+/** @var Block $block */
+/** @var Product $product */
+$product       = $block->getProductCollection()->getFirstItem();
+$catalogHelper = $this->helper(Image::class);
+$ruleToken     = $block->getRuleToken();
+
+if ($product->getId()) : ?>
+    <div class="mageplaza-autorelated-block arp-popup-block" id="<?= /** @noEscape */ $block->getLocationBlock() ?>"
+         rule-id="<?= /** @noEscape */ $block->getRuleId() ?>"
+         data-mage-init='{"arpDefaultBlockFloating": <?= /** @noEscape */ $block->getJsData() ?>}'>
+        <div class="close-popup">
+            <div class="fa btn-close-popup"></div>
+            <div class="fa btn-remove-popup"></div>
+        </div>
+        <div class="popup-content">
+            <div class="image-popup">
+                <span class="product-image-container" style="width: 135px;">
+                    <span class="product-image-wrapper" style="padding-bottom: 100%;">
+                        <img class="product-image-photo" src="<?= /** @noEscape */
+                        $catalogHelper->init($product, 'product_small_image')->getUrl() ?>" width="135" height="135"
+                             alt="<?= /** @noEscape */ $product->getName() ?>">
+                    </span>
+                </span>
+            </div>
+            <div class="popup-right">
+                <div class="arp-popup-label"><?= /** @noEscape */ $block->getTitleBlock() ?: $block->escapeHtml(__('Recommended for you')) ?></div>
+                <a class="product-item-link"
+                   title="<?= /** @noEscape */ $block->escapeHtml($product->getName()) ?>"
+                   href="<?= $block->escapeUrl($block->getProductUrl($product, ['_query' => ['arp_rule_token' => $ruleToken]])) ?>">
+                    <?= /** @noEscape */ $block->escapeHtml($product->getName()) ?>
+                </a>
+                <?= /** @noEscape */
+                $block->getProductPrice($product) ?>
+                <div class="product actions product-item-actions">
+                    <div class="actions-primary">
+                        <?php if ($product->isSaleable()) : ?>
+                            <?php if ($product->getTypeInstance()->hasRequiredOptions($product)) : ?>
+                                <button class="action tocart primary mageplaza-autorelated-button"
+                                        data-mage-init='{"redirectUrl": {"url": "<?= /** @noEscape */
+                                        $block->getAddToCartUrl($product, ['arp_rule_token' => $ruleToken]) ?>"}}'
+                                        type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+                                    <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                </button>
+                            <?php else : ?>
+                                <?php
+                                    /** @var PostHelper $postDataHelper */
+                                    $postDataHelper = $this->helper(PostHelper::class);
+                                    $postData       = $postDataHelper->getPostData(
+                                        $block->getAddToCartUrl($product),
+                                        ['product' => $product->getEntityId(), 'arp_rule_token' => $ruleToken]
+                                    )
+                                ?>
+                                <button class="action tocart primary mageplaza-autorelated-button"
+                                        data-post='<?= /** @noEscape */
+                                        $postData ?>'
+                                        type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+                                    <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                </button>
+                            <?php endif; ?>
+                        <?php else : ?>
+                            <?php if ($product->getIsSalable()) : ?>
+                                <div class="stock available">
+                                    <span><?= $block->escapeHtml(__('In stock')) ?></span></div>
+                            <?php else : ?>
+                                <div class="stock unavailable">
+                                    <span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

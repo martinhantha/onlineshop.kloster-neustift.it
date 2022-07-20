@@ -1,0 +1,93 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_AutoRelated
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+?>
+<script>
+    require([
+        'jquery'
+    ], function ($) {
+        var similarityActions = $('#block_config_rule_apply_similarity'),
+            productLayout = $('#block_config_rule_product_layout');
+
+        function bindAttributeInputType () {
+            switchDefaultValueField();
+        }
+
+        function switchDefaultValueField () {
+            if (!productLayout.length) {
+                return;
+            }
+
+            var gridVisibility   = false,
+                sliderVisibility = false;
+
+            switch (productLayout.val()){
+                case '1':
+                    gridVisibility = true;
+                    break;
+
+                case '0':
+                    sliderVisibility = true;
+                    break;
+            }
+
+            setRowVisibility('#block_config_rule_page_column_layout', gridVisibility);
+            setRowVisibility('#block_config_rule_number_product_slider', sliderVisibility);
+            setRowVisibility('#block_config_rule_number_product_scrolled', sliderVisibility);
+        }
+
+        function setRowVisibility (id, isVisible) {
+            if ($(id).length) {
+                var tr = $(id).parent().parent();
+
+                if (isVisible) {
+                    tr.show();
+                } else {
+                    tr.hide();
+                }
+            }
+        }
+
+        if (productLayout.length) {
+            productLayout.on('change', function () {
+                bindAttributeInputType();
+            });
+        }
+
+        if (similarityActions.length) {
+            showHideSimilarityActions(similarityActions.val());
+            similarityActions.on('change', function () {
+                showHideSimilarityActions(this.value);
+            });
+        }
+
+        function showHideSimilarityActions (value) {
+            var similarityFieldSet = $('#autorelated_rule_formrule_similarity_actions_fieldset_1').parent().parent();
+
+            if (value === '1') {
+                similarityFieldSet.show();
+            } else {
+                similarityFieldSet.hide();
+            }
+        }
+
+        bindAttributeInputType();
+    });
+</script>

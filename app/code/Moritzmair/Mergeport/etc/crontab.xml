@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+	<group id="mergeport">
+		<job name="moritzmair_mergeport_synchproducts" instance="Moritzmair\Mergeport\Cron\SynchProducts" method="execute">
+			<schedule>*/5 * * * *</schedule>
+		</job>
+	</group>
+	<group id="default">
+		<job name="moritzmair_mergeport_synchorders" instance="Moritzmair\Mergeport\Cron\SynchOrders" method="execute">
+			<schedule>*/5 * * * *</schedule>
+		</job>
+	</group>
+</config>

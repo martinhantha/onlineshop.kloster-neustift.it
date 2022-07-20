@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="sales_order">
+		<column name="pos_id" nullable="true" xsi:type="varchar" comment="Pos ID" length="255"/>
+		<column name="synched_at" nullable="true" xsi:type="date" comment="Synched at"/>
+	</table>
+	<table name="sales_order_grid">
+		<column name="pos_id" nullable="true" xsi:type="varchar" comment="Pos ID" length="255"/>
+		<column name="synched_at" nullable="true" xsi:type="date" comment="Synched at"/>
+	</table>
+</schema>

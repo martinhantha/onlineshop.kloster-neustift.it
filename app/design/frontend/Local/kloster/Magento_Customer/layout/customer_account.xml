@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Copyright © Magento, Inc. All rights reserved.
+* See COPYING.txt for license details.
+*/
+-->
+<page layout="2columns-left" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<referenceBlock name="customer-account-navigation-my-credit-cards-link" remove="true" />
+	<referenceBlock name="customer-account-navigation-billing-agreements-link" remove="true" />
+	<referenceBlock name="customer-account-navigation-newsletter-subscriptions-link" remove="true" />
+	<referenceBlock name="customer-account-navigation-downloadable-products-link" remove="true" />
+	<referenceBlock name="customer-account-navigation-product-reviews-link" remove="true" />
+	<referenceBlock name="customer-account-navigation-reward-link" remove="true" />
+	<referenceBlock name="stripe-payments-subscriptions" remove="true" />
+	<referenceBlock name="stripe-payments-customer-cards" remove="true" />
+	<referenceBlock name="customer-account-navigation-questions-link" remove="true" />
+</page>

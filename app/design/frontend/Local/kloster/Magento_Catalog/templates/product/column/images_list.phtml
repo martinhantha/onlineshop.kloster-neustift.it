@@ -1,0 +1,24 @@
+<?php
+    $method = $block->getCollectionMethod() ? $block->getCollectionMethod() : 'getProductCollection';
+?>
+
+<?php if (($_products = $block->{$method}()) && $_products->getSize()): ?>
+    <div class="block widget block-products-images">
+        <div class="block-title">
+            <strong><?php /* @escapeNotVerified */ echo $block->getTitle() ?></strong>
+        </div>
+        <div class="block-content">
+            <?php $suffix = $block->getNameInLayout(); ?>
+            <ol id="widget-products-<?php /* @escapeNotVerified */ echo $suffix; ?>" class="product-items product-items-images">
+                <?php foreach ($_products->getItems() as $_product): ?>
+                    <li class="product-item">
+                        <a class="product-item-photo" href="<?php /* @escapeNotVerified */ echo $_product->getProductUrl() ?>"
+                           title="<?php /* @escapeNotVerified */ echo $block->stripTags($_product->getName(), null, true) ?>">
+                            <?php echo $block->getImage($_product, 'side_column_widget_product_thumbnail')->toHtml(); ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+        </div>
+    </div>
+<?php endif; ?>

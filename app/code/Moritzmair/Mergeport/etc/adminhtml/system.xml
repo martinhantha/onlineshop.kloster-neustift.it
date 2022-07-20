@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<tab id="mergeport" translate="label" sortOrder="999">
+			<label>mergeport</label>
+		</tab>
+		<section id="mergeport" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+			<label>mergeport</label>
+			<tab>mergeport</tab>
+			<resource>Moritzmair_Mergeport::config_moritzmair_mergeport</resource>
+			<group id="options" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+				<label>options</label>
+				<field id="provider_id" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>provider_id</label>
+					<comment/>
+				</field>
+                <field id="restaurant_id" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>restaurant_id</label>
+					<comment/>
+				</field>
+			</group>
+		</section>
+	</system>
+</config>

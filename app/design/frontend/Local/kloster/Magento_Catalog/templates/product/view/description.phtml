@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
+/**
+ * Product description template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\Description
+ */
+?>
+
+<?php
+$product = $block->getProduct();
+$productImageAttr = $product->getCustomAttribute('description_image');
+if ($productImageAttr) {
+    $productImage = $this->helper('Magento\Catalog\Helper\Image')
+        ->init($product, 'description_image')
+        ->setImageFile($productImageAttr->getValue());
+    $productImageUrl = $productImage->getUrl();
+} else {
+    $productImageUrl = null; //'/static/frontend/Local/kloster/de_DE/images/default_description.jpg';
+
+}
+?>
+
+
+<div class="argento-float-photo hidden-xs hidden-sm"><?php if ($productImageUrl) : ?><img src="<?= $productImageUrl ?>"><?php endif; ?></div>
+
+<?= /* @noEscape */ $this->helper(Magento\Catalog\Helper\Output::class)->productAttribute(
+    $block->getProduct(),
+    $block->getProduct()->getDescription(),
+    'description'
+) ?>

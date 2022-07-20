@@ -1,0 +1,145 @@
+<?php
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @var $block \Magento\Catalog\Block\Product\ListProduct
+ */
+?>
+<?php
+$_productCollection = $block->getLoadedProductCollection();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php if (!$_productCollection->count()): ?>
+    <div class="message info empty"><div><?php /* @escapeNotVerified */ echo __('We can\'t find products matching the selection.') ?></div></div>
+<?php else: ?>
+    <?php echo $block->getToolbarHtml() ?>
+    <?php echo $block->getAdditionalHtml() ?>
+    <?php
+    if ($block->getMode() == 'grid') {
+        $viewMode = 'grid';
+        $image = 'category_page_grid';
+        $showDescription = false;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    } else {
+        $viewMode = 'list';
+        $image = 'category_page_list';
+        $showDescription = true;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+    }
+    /**
+     * Position for actions regarding image size changing in vde if needed
+     */
+    $pos = $block->getPositioned();
+
+    $actionsBlockPosition = $block->getVar("argento/listing/{$viewMode}/actions/position", 'Magento_Catalog');
+    $actionsBlock = $block->getLayout()
+        ->createBlock('Magento\Framework\View\Element\Template')
+        ->setTemplate('Magento_Catalog::product/list/actions.phtml');
+    $block->setChild('actions', $actionsBlock);
+    ?>
+
+    <div class="products wrapper <?php /* @escapeNotVerified */ echo $viewMode; ?> products-<?php /* @escapeNotVerified */ echo $viewMode; ?>">
+        <?php $iterator = 1; ?>
+        <ol class="products list items product-items">
+            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+            <?php foreach ($_productCollection as $_product): ?>
+                <?php /* @escapeNotVerified */ echo($iterator++ == 1) ? '<li class="item product product-item">' : '</li><li class="item product product-item">' ?>
+                <div class="product-item-info" data-container="product-grid">
+                    <?php
+                    $productImage = $block->getImage($_product, $image);
+                    if ($pos != null) {
+                        $position = ' style="left:' . $productImage->getWidth() . 'px;'
+                            . 'top:' . $productImage->getHeight() . 'px;"';
+                    }
+                    ?>
+                    <div class="prolabels-wrapper">
+                        <?php
+                            $prolabelsCatalogHelper = $this->helper('Swissup\ProLabels\Helper\Catalog');
+                            echo $prolabelsCatalogHelper->getProductLabels($_product);
+                        ?>
+                        <?php // Product Image ?>
+                        <a href="<?php /* @escapeNotVerified */ echo $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
+                            <?php echo $productImage->toHtml(); ?>
+                            <?php
+                                if ($_helper->isModuleOutputEnabled('Swissup_HoverGallery')) {
+                                    echo $this->helper('Swissup\HoverGallery\Helper\Data')->renderHoverImage(
+                                        $_product,
+                                        $image
+                                    );
+                                }
+                            ?>
+                        </a>
+                        <?php if ($actionsBlockPosition === 'prolabels-wrapper') {
+                            if ($pos != null) {
+                                $actionsBlock->setPosition($position);
+                            }
+                            echo $actionsBlock->setProduct($_product)->toHtml();
+                        }?>
+                    </div>
+                    <div class="product details product-item-details">
+                        <?php
+                            $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                        ?>
+                        <strong class="product name product-item-name">
+                            <a class="product-item-link"
+                               href="<?php /* @escapeNotVerified */ echo $_product->getProductUrl() ?>">
+                                <?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>
+                            </a>
+                        </strong>
+                        <?php /* @escapeNotVerified */ echo $block->getProductPrice($_product) ?>
+
+                        <?php
+                            if ($_helper->isModuleOutputEnabled('Swissup_Fblike')) {
+                                echo $this->helper('Swissup\Fblike\Helper\Like')->getProductLike($_product);
+                            }
+                        ?>
+
+                        <?php echo $block->getReviewsSummaryHtml($_product, $templateType); ?>
+                        <?php echo $block->getProductDetailsHtml($_product); ?>
+
+                        <div class="product-item-inner">
+                            <?php if ($actionsBlockPosition === 'default') {
+                                if ($pos != null) {
+                                    $actionsBlock->setPosition($position);
+                                }
+                                echo $actionsBlock->setProduct($_product)->toHtml();
+                            }?>
+                            <?php if ($showDescription):?>
+                                <div class="product description product-item-description">
+                                    <?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                    <a href="<?php /* @escapeNotVerified */ echo $_product->getProductUrl() ?>" title="<?php /* @escapeNotVerified */ echo $_productNameStripped ?>"
+                                       class="action more"><?php /* @escapeNotVerified */ echo __('Learn More') ?></a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <?php if ($_helper->isModuleOutputEnabled('Swissup_FeaturedAttributes')) {
+                            echo $block->getLayout()
+                                ->createBlock('Swissup\FeaturedAttributes\Block\Attributes')
+                                ->setProduct($_product)
+                                ->toHtml();
+                        }?>
+                    </div>
+                </div>
+                <?php echo($iterator == count($_productCollection)+1) ? '</li>' : '' ?>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+    <?= $block->getChildBlock('toolbar')->setIsBottom(true)->toHtml() ?>
+    <?php if (!$block->isRedirectToCartEnabled()) : ?>
+        <script type="text/x-magento-init" data-init-lazy="submit">
+        {
+            "[data-role=tocart-form], .form.map.checkout": {
+                "catalogAddToCart": {}
+            }
+        }
+        </script>
+    <?php endif; ?>
+<?php endif; ?>
