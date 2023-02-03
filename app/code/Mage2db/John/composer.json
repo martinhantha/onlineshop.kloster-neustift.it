@@ -1,0 +1,17 @@
+{
+   "name": "Mage2db/John",
+   "type": "magento2-module",
+   "description": "This Module is a bug fix for the error message in the dashboard after login into the Magento 2.4.3 backend",
+   "minimum-stability": "dev",
+   "require": {
+     "php": ">=7.3.0"
+   },
+   "autoload": {
+     "files": [
+       "registration.php"
+     ],
+     "psr-4": {
+       "Mage2db\\John\\": ""
+     }
+   }
+ }

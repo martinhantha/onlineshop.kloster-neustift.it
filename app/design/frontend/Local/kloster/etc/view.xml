@@ -143,6 +143,8 @@
                 
             </image>
             <image id="rss_thumbnail" type="thumbnail">
+                <width>500</width>
+                <height>682</height>
                 <background>[242, 238, 229]</background>
                 
             </image>
