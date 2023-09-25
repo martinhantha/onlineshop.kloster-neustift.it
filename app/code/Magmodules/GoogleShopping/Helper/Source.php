@@ -159,7 +159,7 @@ class Source extends AbstractHelper
         $config['feed_locations'] = $this->feedHelper->getFeedLocation($storeId, $type);
         $config['utm_code'] = $this->generalHelper->getStoreValue(self::XPATH_URL_UTM);
         $config['debug_memory'] = $this->generalHelper->getStoreValue(self::XPATH_DEBUG_MEMORY);
-        $config['weight_unit'] = $this->getWeightUnit();
+        $config['weight_unit'] = ' g';
         $config['identifier_exists'] = $this->generalHelper->getStoreValue(self::XPATH_IDENTIFIER);
         $config['default_category'] = $this->generalHelper->getStoreValue(self::XPATH_CATEGORY);
         $config['inventory'] = $this->getInventoryData();
