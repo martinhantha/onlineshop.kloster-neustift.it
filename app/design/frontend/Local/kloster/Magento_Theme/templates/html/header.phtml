@@ -24,7 +24,33 @@
  */
 $welcomeMessage = $block->getWelcome();
 ?>
-<?php if ($block->getShowPart() == 'welcome') : ?>
+<?php
+
+$host = $_SERVER['HTTP_HOST'];
+
+
+if (!isset($_COOKIE) || !isset($_COOKIE['browserlanguage']) && !isset($_GET["lp"])) {
+   $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+   $store = $objectManager->get('Magento\Store\Model\StoreManagerInterface');
+   $code = substr($store->getStore()->getCode(), 0, 2);
+   if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+      $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+   } else {
+      $lang = 'en';
+   }
+
+   $acceptLang = ['de', 'it', 'en'];
+   $lang = in_array($lang, $acceptLang) ? $lang : 'en';
+   setcookie("browserlanguage", $lang);
+   $uri = $_SERVER['REQUEST_URI'];
+   if ($lang != $code && !strpos($uri, '_toscana')) {
+      header("HTTP/1.1 301 Moved Permanently");
+      header("Location: https://" . $host . "/" . $lang . "/");
+      exit();
+   }
+}
+
+if ($block->getShowPart() == 'welcome') : ?>
     <li class="greet welcome" data-bind="scope: 'customer'">
         <!-- ko if: customer().fullname  -->
         <span class="logged-in"
