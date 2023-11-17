@@ -6,5 +6,10 @@
                 <value id="adobetypekit" type="host">*.typekit.net</value>
             </values>
         </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="xclarity" type="host">https://*.clarity.ms</value>
+            </values>
+        </policy>
     </policies>
 </csp_whitelist>
